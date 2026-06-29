@@ -38,9 +38,9 @@ def home():
 @app.route('/api/plans')
 def get_plans():
     plans = [
-        {"id": 1, "name": "Strength<br>Training", "price": 1000, "features":
+        {"id": 1, "name": "Strength Training", "price": 1000, "features":
             ["Admission fee: ₹500", "Gym Access", "Locker Room", "Strength Training Classes", "Diet Plan"], "popular": False},
-        {"id": 2, "name": "Cardio +<br>Strength", "price": 1500, "features":
+        {"id": 2, "name": "Cardio + Strength", "price": 1500, "features":
             ["Admission fee: ₹500", "All Basic Features", "Strength Training & Cardio Classes", "Personal Trainer", "Diet Plan"], "popular": True},
     ]
     return jsonify(plans)
