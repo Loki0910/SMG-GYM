@@ -77,7 +77,7 @@ fetch('/api/trainers').then(r => r.json()).then(trainers => {
   const grid = document.getElementById('trainerGrid');
   grid.innerHTML = trainers.map(t => `
     <div class="trainer-card">
-      <div class="trainer-avatar"><img src="/static/images/IMG.jpeg" alt="${t.name}"></div>
+      <div class="trainer-avatar"><img src="/static/images/IMG.jpeg" alt="Trainer"></div>
       <h3>${t.name}</h3>
       <p class="role">${t.role}</p>
       <p class="contact">Contact: ${t.contact}</p>
