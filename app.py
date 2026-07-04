@@ -50,9 +50,7 @@ def get_plans():
 @app.route('/api/trainers')
 def get_trainers():
     trainers = [
-        {"name": "Alex Carter", "role": "Strength Coach", "exp": "8 yrs"},
-        {"name": "Maya Singh", "role": "Yoga & Flexibility", "exp": "6 yrs"},
-        {"name": "Sara Lee", "role": "Nutritionist", "exp": "5 yrs"},
+        {"name": "Sri", "role": "Strength Coach","contact": "8940881210", "exp": "8 yrs"},
     ]
     return jsonify(trainers)
 
@@ -61,15 +59,15 @@ def get_trainers():
 @app.route('/api/join', methods=['POST'])
 def join():
     data = request.get_json()
-    if not data.get('name') or not data.get('email'):
+    if not data or not data.get('name') or not data.get('email'):
         return jsonify({"success": False, "message": "Name and email required"}), 400
 
-    member = Member(
-        name=data['name'],
-        email=data['email'],
-        phone=data.get('phone', ''),
-        plan=data.get('plan', '')
-    )
+    member = Member()
+    member.name = data['name']
+    member.email = data['email']
+    member.phone = data.get('phone', '')
+    member.plan = data.get('plan', '')
+
     db.session.add(member)
     db.session.commit()
     return jsonify({"success": True, "message": f"Welcome {member.name}! 🎉 You joined the {member.plan} plan."})
@@ -79,11 +77,14 @@ def join():
 @app.route('/api/contact', methods=['POST'])
 def contact():
     data = request.get_json()
-    msg = Contact(
-        name=data.get('name'),
-        email=data.get('email'),
-        message=data.get('message')
-    )
+    if not data or not data.get('name') or not data.get('email') or not data.get('message'):
+        return jsonify({"success": False, "message": "Name, email, and message are required"}), 400
+
+    msg = Contact()
+    msg.name = data['name']
+    msg.email = data['email']
+    msg.message = data['message']
+
     db.session.add(msg)
     db.session.commit()
     return jsonify({"success": True, "message": "Message sent! We'll reply soon. 💪"})
