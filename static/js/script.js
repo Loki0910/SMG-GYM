@@ -72,6 +72,8 @@ fetch('/api/plans').then(r => r.json()).then(plans => {
     </div>`).join('');
 });
 
+const defaultTrainerAvatar = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgMTIwIj48Y2lyY2xlIGN4PSI2MCIgY3k9IjQwIiByPSIyOCIgZmlsbD0iIzRjNGM0YyIvPjxwYXRoIGQ9Ik0yNCAxMDZjMC0yNCAyMC00NCA0NC00NHM0NCAyMCA0NCA0NCIgZmlsbD0iIzRjNGM0YyIgb3BhY2l0eT0iLjgiLz48cGF0aCBkPSJNNDIgNThjMC0xMCA4LTE4IDE4LTE4czE4IDggMTggMTgiIGZpbGw9IiNmZmYiIG9wYWNpdHk9Ii4zIi8+PC9zdmc+';
+
 // ---------- LOAD TRAINERS FROM BACKEND ----------
 fetch('/api/trainers').then(r => r.json()).then(trainers => {
   const grid = document.getElementById('trainerGrid');
