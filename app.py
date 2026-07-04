@@ -60,7 +60,7 @@ def get_trainers():
 def join():
     data = request.get_json()
     if not data or not data.get('name') or not data.get('email'):
-        return jsonify({"success": False, "message": "Name and email required"}), 400
+      return jsonify({"success": False, "message": "Name and email required"}), 400
 
     member = Member()
     member.name = data['name']

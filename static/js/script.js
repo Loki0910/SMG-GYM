@@ -77,15 +77,26 @@ fetch('/api/trainers').then(r => r.json()).then(trainers => {
   const grid = document.getElementById('trainerGrid');
   grid.innerHTML = trainers.map(t => `
     <div class="trainer-card">
-      <div class="trainer-avatar">${t.name.split(' ').map(n => n[0]).join('')}</div>
+      <div class="trainer-avatar"><img src="/static/images/IMG.jpeg" alt="${t.name}"></div>
       <h3>${t.name}</h3>
       <p class="role">${t.role}</p>
+      <p class="contact">Contact: ${t.contact}</p>
       <p class="exp">Experience: ${t.exp}</p>
     </div>`).join('');
 });
 
-// ---------- JOIN MODAL ----------
+// ---------- FORM ELEMENT REFERENCES ----------
 const modal = document.getElementById('joinModal');
+const jName = document.getElementById('jName');
+const jEmail = document.getElementById('jEmail');
+const jPhone = document.getElementById('jPhone');
+const joinMsg = document.getElementById('joinMsg');
+const cName = document.getElementById('cName');
+const cEmail = document.getElementById('cEmail');
+const cMessage = document.getElementById('cMessage');
+const contactMsg = document.getElementById('contactMsg');
+
+// ---------- JOIN MODAL ----------
 function openJoin(plan) {
   document.getElementById('selectedPlan').innerText = plan;
   modal.dataset.plan = plan;
@@ -95,30 +106,62 @@ document.getElementById('closeModal').onclick = () => modal.classList.remove('ac
 modal.onclick = e => { if (e.target === modal) modal.classList.remove('active'); };
 
 document.getElementById('submitJoin').onclick = () => {
+  joinMsg.innerText = '';
   const data = {
-    name: jName.value, email: jEmail.value,
-    phone: jPhone.value, plan: modal.dataset.plan
+    name: jName.value.trim(),
+    email: jEmail.value.trim(),
+    phone: jPhone.value.trim(),
+    plan: modal.dataset.plan || ''
   };
+
+  if (!data.name || !data.email) {
+    joinMsg.innerText = 'Please enter your name and email to join.';
+    return;
+  }
+
   fetch('/api/join', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
-  }).then(r => r.json()).then(res => {
-    document.getElementById('joinMsg').innerText = res.message;
-    if (res.success) {
-      jName.value = jEmail.value = jPhone.value = '';
-      setTimeout(() => modal.classList.remove('active'), 2500);
-    }
-  });
+  })
+    .then(async response => {
+      const json = await response.json();
+      joinMsg.innerText = json.message || 'Unexpected server response.';
+      if (response.ok && json.success) {
+        jName.value = jEmail.value = jPhone.value = '';
+        setTimeout(() => modal.classList.remove('active'), 2500);
+      }
+    })
+    .catch(() => {
+      joinMsg.innerText = 'Server error. Please try again later.';
+    });
 };
 
 // ---------- CONTACT FORM ----------
 document.getElementById('sendContact').onclick = () => {
-  const data = { name: cName.value, email: cEmail.value, message: cMessage.value };
+  contactMsg.innerText = '';
+  const data = {
+    name: cName.value.trim(),
+    email: cEmail.value.trim(),
+    message: cMessage.value.trim()
+  };
+
+  if (!data.name || !data.email || !data.message) {
+    contactMsg.innerText = 'Please fill all contact fields before sending.';
+    return;
+  }
+
   fetch('/api/contact', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
-  }).then(r => r.json()).then(res => {
-    document.getElementById('contactMsg').innerText = res.message;
-    cName.value = cEmail.value = cMessage.value = '';
-  });
+  })
+    .then(async response => {
+      const json = await response.json();
+      contactMsg.innerText = json.message || 'Unexpected server response.';
+      if (response.ok && json.success) {
+        cName.value = cEmail.value = cMessage.value = '';
+      }
+    })
+    .catch(() => {
+      contactMsg.innerText = 'Server error. Please try again later.';
+    });
 };
