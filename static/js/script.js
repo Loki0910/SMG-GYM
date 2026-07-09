@@ -90,12 +90,8 @@ fetch('/api/trainers').then(r => r.json()).then(trainers => {
 // ---------- FORM ELEMENT REFERENCES ----------
 const modal = document.getElementById('joinModal');
 const jName = document.getElementById('jName');
-const jEmail = document.getElementById('jEmail');
-const jPhone = document.getElementById('jPhone');
-const joinMsg = document.getElementById('joinMsg');
-const cName = document.getElementById('cName');
-const cEmail = document.getElementById('cEmail');
-const cMessage = document.getElementById('cMessage');
+
+
 const contactMsg = document.getElementById('contactMsg');
 
 // ---------- JOIN MODAL ----------
@@ -109,11 +105,15 @@ modal.onclick = e => { if (e.target === modal) modal.classList.remove('active');
 
 document.getElementById('submitJoin').onclick = () => {
   joinMsg.innerText = '';
-  const data = {
-    name: jName.value.trim(),
-    email: jEmail.value.trim(),
-    phone: jPhone.value.trim(),
-    plan: modal.dataset.plan || ''
+function mailsend() {
+      let params = {
+        name1:document.getElementById("jName").value,
+        email1:document.getElementById("jEmail").value,
+        phone:document.getElementById("jphone").value,
+        plan: modal.dataset.plan || ''
+      }
+      emailjs.send("service_icbvknq","template_ohcn2mt",params).then(alert("email sent successfully"))
+    
   };
 
   if (!data.name || !data.email) {
@@ -139,13 +139,15 @@ document.getElementById('submitJoin').onclick = () => {
 };
 
 // ---------- CONTACT FORM ----------
-document.getElementById('sendContact').onclick = () => {
-  contactMsg.innerText = '';
-  const data = {
-    name: cName.value.trim(),
-    email: cEmail.value.trim(),
-    message: cMessage.value.trim()
-  };
+function sendmail() {
+      let parms = {
+        name:document.getElementById("cName").value,
+        email:document.getElementById("cEmail").value,
+        message:document.getElementById("cMessage").value,
+      }
+      emailjs.send("service_icbvknq","template_uirhcnp",parms).then(alert("email sent successfully"))
+  
+
 
   if (!data.name || !data.email || !data.message) {
     contactMsg.innerText = 'Please fill all contact fields before sending.';
@@ -160,10 +162,12 @@ document.getElementById('sendContact').onclick = () => {
       const json = await response.json();
       contactMsg.innerText = json.message || 'Unexpected server response.';
       if (response.ok && json.success) {
-        cName.value = cEmail.value = cMessage.value = '';
+        document.getElementById('cName').value = '';
+        document.getElementById('cEmail').value = '';
+        document.getElementById('cMessage').value = '';
       }
     })
     .catch(() => {
       contactMsg.innerText = 'Server error. Please try again later.';
     });
-};
+}

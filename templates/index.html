@@ -6,6 +6,16 @@
   <title>SMG GYM | Transform Your Body</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+      (function(){
+        emailjs.init({
+          publicKey: "iExowtPw1x02s27E-",
+        });
+      })();
+    </script>
 </head>
 <body>
 
@@ -75,7 +85,7 @@
       <input type="text" id="jName" placeholder="Full Name">
       <input type="email" id="jEmail" placeholder="Email">
       <input type="text" id="jPhone" placeholder="Phone">
-      <button class="btn-primary" id="submitJoin">Confirm Membership</button>
+      <button class="btn-primary" id="submitJoin" type="button" onclick="mailsend()">Confirm Membership</button>
       <p class="form-msg" id="joinMsg"></p>
     </div>
   </div>
@@ -87,7 +97,8 @@
       <input type="text" id="cName" placeholder="Your Name">
       <input type="email" id="cEmail" placeholder="Your Email">
       <textarea id="cMessage" placeholder="Your Message"></textarea>
-      <button class="btn-primary" id="sendContact">Send Message</button>
+      <button class="btn-primary" id="sendContact" type="button" onclick="sendmail()">Send Message</button>
+
       <p class="form-msg" id="contactMsg"></p>
     </div>
   </section>
