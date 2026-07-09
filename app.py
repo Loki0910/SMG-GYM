@@ -11,21 +11,21 @@ db = SQLAlchemy(app)
 
 
 # ---------------- DATABASE MODELS ----------------
-class Member(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(120), nullable=False)
-    phone = db.Column(db.String(20))
-    plan = db.Column(db.String(50))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+#class Member(db.Model):
+#    id = db.Column(db.Integer, primary_key=True)
+#    name = db.Column(db.String(100), nullable=False)
+#    email = db.Column(db.String(120), nullable=False)
+#    phone = db.Column(db.String(20))
+#    plan = db.Column(db.String(50))
+#    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
-class Contact(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    email = db.Column(db.String(120))
-    message = db.Column(db.Text)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+#class Contact(db.Model):
+#    id = db.Column(db.Integer, primary_key=True)
+#    name = db.Column(db.String(100))
+#    email = db.Column(db.String(120))
+#    message = db.Column(db.Text)
+#    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
 # ---------------- ROUTES ----------------
@@ -60,17 +60,14 @@ def get_trainers():
 def join():
     data = request.get_json()
     if not data or not data.get('name') or not data.get('email'):
-      return jsonify({"success": False, "message": "Name and email required"}), 400
+        return jsonify({"success": False, "message": "Name and email required"}), 400
 
-    member = Member()
-    member.name = data['name']
-    member.email = data['email']
-    member.phone = data.get('phone', '')
-    member.plan = data.get('plan', '')
+    name = data['name']
+    email = data['email']
+    phone = data.get('phone', '')
+    plan = data.get('plan', '')
 
-    db.session.add(member)
-    db.session.commit()
-    return jsonify({"success": True, "message": f"Welcome {member.name}! 🎉 You joined the {member.plan} plan."})
+    return jsonify({"success": True, "message": f"Welcome {name}! 🎉 You joined the {plan} plan."})
 
 
 # Contact form
@@ -79,29 +76,25 @@ def contact():
     data = request.get_json()
     if not data or not data.get('name') or not data.get('email') or not data.get('message'):
         return jsonify({"success": False, "message": "Name, email, and message are required"}), 400
+    name = data['name']
+    email = data['email']
+    message = data['message']
 
-    msg = Contact()
-    msg.name = data['name']
-    msg.email = data['email']
-    msg.message = data['message']
-
-    db.session.add(msg)
-    db.session.commit()
     return jsonify({"success": True, "message": "Message sent! We'll reply soon. 💪"})
+  
 
 
 # Admin: view members (simple)
-@app.route('/api/members')
-def members():
-    all_members = Member.query.all()
-    return jsonify([
-        {"id": m.id, "name": m.name, "email": m.email,
-         "plan": m.plan, "joined": m.created_at.strftime('%Y-%m-%d')}
-        for m in all_members
-    ])
+#@app.route('/api/members')
+#def members():
+#    all_members = Member.query.all()
+#    return jsonify([
+#        {"id": m.id, "name": m.name, "email": m.email,
+#         "plan": m.plan, "joined": m.created_at.strftime('%Y-%m-%d')}
+#        for m in all_members
+#  ])
+
 
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True, host='0.0.0.0', port=5000)
