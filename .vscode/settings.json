@@ -1,4 +1,5 @@
 {
+    "python.defaultInterpreterPath": "C:\\Users\\loki\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
     "python.testing.unittestArgs": [
         "-v",
         "-s",
